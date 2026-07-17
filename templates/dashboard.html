@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Laundry Service{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include "_navbar.html" %}
+
+<div class="dashboard-content">
+    <h1>Welcome back, {{ username }} 👋</h1>
+    <p class="subtitle">Here's an overview of your laundry business.</p>
+
+    <!-- Stat cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Total Orders</span>
+            <span class="stat-value" data-value="{{ total_orders }}" data-decimals="0">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Pending Orders</span>
+            <span class="stat-value" data-value="{{ pending_orders }}" data-decimals="0">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Completed Today</span>
+            <span class="stat-value" data-value="{{ completed_today }}" data-decimals="0">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Revenue Today</span>
+            <span class="stat-value" data-value="{{ revenue_today }}" data-decimals="2" data-prefix="$">$0.00</span>
+        </div>
+    </div>
+
+    <p class="note">📊 These numbers are now live — pulled straight from your orders database.</p>
+</div>
+
+<script>
+    // Animate each stat number counting up from 0 to its real value
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.stat-value[data-value]').forEach(function (el, index) {
+            const target = parseFloat(el.getAttribute('data-value')) || 0;
+            const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+            const prefix = el.getAttribute('data-prefix') || '';
+            const duration = 800;
+            const startDelay = index * 100;
+
+            setTimeout(function () {
+                const startTime = performance.now();
+
+                function step(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = target * eased;
+                    el.textContent = prefix + current.toFixed(decimals);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        el.textContent = prefix + target.toFixed(decimals);
+                    }
+                }
+                requestAnimationFrame(step);
+            }, startDelay);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications - Laundry Service{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include "_navbar.html" %}
+
+<div class="dashboard-content">
+    <h1>Notifications</h1>
+    <p class="subtitle">Everything that's happened recently.</p>
+
+    {% if notifications %}
+        <div class="edit-form-buttons" style="margin-bottom: 20px;">
+            <a href="{{ url_for('mark_all_read') }}" class="action-link edit">Mark all as read</a>
+        </div>
+    {% endif %}
+
+    <div class="table-card">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Message</th>
+                    <th>When</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for note in notifications %}
+                <tr>
+                    <td>
+                        {% if not note["is_read"] %}<strong>{% endif %}
+                        {{ note["message"] }}
+                        {% if not note["is_read"] %}</strong>{% endif %}
+                    </td>
+                    <td>{{ note["created_at"] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="2" class="empty-row">No notifications yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

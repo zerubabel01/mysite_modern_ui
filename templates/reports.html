@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Reports - Laundry Service{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    // Data passed in from Flask
+    const chartLabels = {{ chart_labels | tojson }};
+    const chartValues = {{ chart_values | tojson }};
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: chartValues,
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+{% include "_navbar.html" %}
+
+<div class="dashboard-content">
+    <h1>Reports</h1>
+    <p class="subtitle">A quick look at how the business is doing.</p>
+
+    <!-- Summary cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Total Orders (All Time)</span>
+            <span class="stat-value">{{ total_orders }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Total Revenue (All Time)</span>
+            <span class="stat-value">${{ "%.2f"|format(total_revenue) }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Pending Orders</span>
+            <span class="stat-value">{{ pending_count }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Completed Orders</span>
+            <span class="stat-value">{{ completed_count }}</span>
+        </div>
+    </div>
+
+    <!-- Revenue chart -->
+    <div class="order-form-card">
+        <h2>Revenue - Last 7 Days</h2>
+        <canvas id="revenueChart" height="90"></canvas>
+    </div>
+
+    <!-- Top customers -->
+    <div class="table-card">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Orders</th>
+                    <th>Total Spent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in top_customers %}
+                <tr>
+                    <td>{{ customer["customer_name"] }}</td>
+                    <td>{{ customer["order_count"] }}</td>
+                    <td>${{ "%.2f"|format(customer["total_spent"]) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" class="empty-row">No orders yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

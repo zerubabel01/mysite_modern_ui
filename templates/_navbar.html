@@ -1,0 +1,120 @@
+<!-- Left sidebar navigation (shared across all logged-in pages) -->
+<button id="sidebar-toggle" class="sidebar-toggle" aria-label="Open menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+</button>
+<div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <svg class="brand-mark" width="24" height="24" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="6"/>
+            <g class="brand-mark-spin">
+                <path d="M50 14 C71 14 88 31 88 50" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M50 86 C29 86 12 69 12 50" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+                <circle cx="50" cy="50" r="8" fill="currentColor"/>
+            </g>
+        </svg>
+        <span>Laundry Service</span>
+    </div>
+
+    <div class="sidebar-nav">
+        <a href="{{ url_for('dashboard_advanced') }}" class="nav-link {% if request.endpoint == 'dashboard_advanced' %}active{% endif %}">
+            <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="3" width="8" height="5" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="11" width="8" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="8" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/></svg></span>
+            Dashboard
+        </a>
+        <a href="{{ url_for('orders_advanced') }}" class="nav-link {% if request.endpoint in ['orders_advanced', 'orders', 'edit_order'] %}active{% endif %}">
+            <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M7 3h10a1 1 0 0 1 1 1v16l-3-2-3 2-3-2-3 2V4a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            Orders
+        </a>
+        <a href="{{ url_for('customers') }}" class="nav-link {% if request.endpoint in ['customers', 'customer_profile', 'edit_customer'] %}active{% endif %}">
+            <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 20c.7-3.4 3-5.2 5.5-5.2s4.8 1.8 5.5 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="17" cy="8" r="2.6" stroke="currentColor" stroke-width="1.6" opacity="0.65"/><path d="M15.8 14.9c2.1.2 3.7 1.9 4.2 4.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.65"/></svg></span>
+            Customers
+        </a>
+        <a href="{{ url_for('reports') }}" class="nav-link {% if request.endpoint == 'reports' %}active{% endif %}">
+            <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M11 20V4M18 20v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Reports
+        </a>
+
+        <div class="sidebar-section-label">Account</div>
+        <a href="{{ url_for('notifications') }}" class="nav-link {% if request.endpoint == 'notifications' %}active{% endif %}">
+            <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.6 2.4A1 1 0 0 0 5.2 20h13.6a1 1 0 0 0 .8-1.6L18 16Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            Notifications
+            {% if unread_count and unread_count > 0 %}
+                <span class="notification-badge" style="position:static; margin-left:auto;">{{ unread_count }}</span>
+            {% endif %}
+        </a>
+        <a href="{{ url_for('profile') }}" class="nav-link {% if request.endpoint == 'profile' %}active{% endif %}">
+            <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/><path d="M19.4 13.6a1.6 1.6 0 0 0 .32 1.76l.06.06a2 2 0 1 1-2.82 2.82l-.06-.06a1.6 1.6 0 0 0-1.76-.32 1.6 1.6 0 0 0-1 1.46V19.4a2 2 0 1 1-4 0v-.09a1.6 1.6 0 0 0-1.05-1.46 1.6 1.6 0 0 0-1.76.32l-.06.06a2 2 0 1 1-2.82-2.82l.06-.06a1.6 1.6 0 0 0 .32-1.76 1.6 1.6 0 0 0-1.46-1H4.6a2 2 0 1 1 0-4h.09a1.6 1.6 0 0 0 1.46-1.05 1.6 1.6 0 0 0-.32-1.76l-.06-.06a2 2 0 1 1 2.82-2.82l.06.06a1.6 1.6 0 0 0 1.76.32H10.5a1.6 1.6 0 0 0 1-1.46V4.6a2 2 0 1 1 4 0v.09a1.6 1.6 0 0 0 1 1.46 1.6 1.6 0 0 0 1.76-.32l.06-.06a2 2 0 1 1 2.82 2.82l-.06.06a1.6 1.6 0 0 0-.32 1.76V10.5a1.6 1.6 0 0 0 1.46 1h.09a2 2 0 1 1 0 4h-.09a1.6 1.6 0 0 0-1.46 1Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+            Profile
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="sidebar-footer-row">
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">{{ session.get('username', 'U')[0]|upper }}</div>
+                <span class="sidebar-user-name">{{ session.get('username', '') }}</span>
+            </div>
+            <div style="display:flex; gap:6px;">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode"></button>
+                <div class="notification-bell-wrapper">
+                    <button id="notification-bell" class="notification-bell" aria-label="Notifications">
+                        🔔
+                        {% if unread_count and unread_count > 0 %}
+                            <span class="notification-badge">{{ unread_count }}</span>
+                        {% endif %}
+                    </button>
+                    <div id="notification-dropdown" class="notification-dropdown">
+                        {% if recent_notifications %}
+                            {% for note in recent_notifications %}
+                                <div class="notification-item {% if not note['is_read'] %}unread{% endif %}">
+                                    {{ note["message"] }}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="notification-item">No notifications yet.</div>
+                        {% endif %}
+                        <a href="{{ url_for('notifications') }}" class="notification-view-all">View all</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Notification dropdown toggle
+        const bell = document.getElementById("notification-bell");
+        const dropdown = document.getElementById("notification-dropdown");
+        if (bell && dropdown) {
+            bell.addEventListener("click", function (e) {
+                e.stopPropagation();
+                dropdown.classList.toggle("open");
+            });
+            document.addEventListener("click", function () {
+                dropdown.classList.remove("open");
+            });
+        }
+
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById("sidebar");
+        const toggleBtn = document.getElementById("sidebar-toggle");
+        const backdrop = document.getElementById("sidebar-backdrop");
+        function closeSidebar() {
+            sidebar.classList.remove("open");
+            backdrop.classList.remove("open");
+        }
+        if (toggleBtn && sidebar && backdrop) {
+            toggleBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                sidebar.classList.toggle("open");
+                backdrop.classList.toggle("open");
+            });
+            backdrop.addEventListener("click", closeSidebar);
+        }
+    });
+</script>
